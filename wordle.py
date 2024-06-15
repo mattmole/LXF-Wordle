@@ -27,7 +27,9 @@ class Wordle:
                     self.wordList.append(word)
     
     def pickRandomWord(self):
-        return random.choice(self.wordList)
+        randomWord = random.choice(self.wordList)
+        self.randomWord = randomWord
+        return randomWord
 
     def checkWordGuess(self, guess):
         letterCounter = 0
@@ -57,15 +59,14 @@ class Wordle:
 
                 #Now we need to check how many times a letter is in the guess vs the chosen word
                 #and act accordingly
-                if usedLetterCount[letter] == 1:
+                if usedLetterCount[letter] <= letterCountInGuess:
                     if letter == self.randomWord[letterCounter]:
                         guessDict[letterCounter] = {"letter":letter, "reason":"letterCorrectPosition", "string":f"[green]{letter}[/green]"}
                         letterStatusCount += 1
                     else:
                         guessDict[letterCounter] = {"letter":letter, "reason":"letterWrongPosition", "string":f"[yellow]{letter}[/yellow]"}
-                elif letterCountInGuess > letterCountInRandomWord and usedLetterCount[letter] > letterCountInRandomWord:
+                elif letterCountInGuess >= letterCountInRandomWord and usedLetterCount[letter] >= letterCountInRandomWord:
                     guessDict[letterCounter] = {"letter":letter, "reason":"letterNotInChosenWord", "string":f"[red]{letter}[/red]"}
-
             letterCounter += 1
         self.guessResults = guessDict
         self.guessStatus = False
